@@ -1,16 +1,12 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 /*GuessNumJellyBeans takes an array of ints representing guesses at the number of jelly beans contained in a jar, then based solely on the list
  * of guesses the function returns its best guess as to the number of jelly beans contained in the jar. If there are 2 or more guesses then the function
- * should return the average of all the guesses. If there is only one guess the function should randomly guess either one higher or one lower than
+ * should return the average of all the guesses, rounded. If there is only one guess the function should randomly guess either one higher or one lower than
  * the guess. GuessArray has a minimum of one member and can contain infinitely many guesses. 
  */
 class Program
 {
-    static void Main(string[] args
+    static void Main(string[] args)
     {
         int[] test0 = new int[] {15}; //should return 14 or 16, can be run multiple times to show variation
         Console.WriteLine(GuessNumJellyBeans(test0));
@@ -30,24 +26,35 @@ class Program
     {   //case: guessArray contains only one memeber
         if (guessArray.Length == 1)
         {
-            //generate a 50/50 random
-            Random rnd = new Random();
-            int i = rnd.Next(2); //random either 0 or 1
-
-                //return either +1 or -1 relative to the existing guess
-                if (i == 0)
+           //Random01 helper function returns either 0 or 1
+                if (Random01() == 0)
                 {
                     return guessArray[0] + 1;
                 }
                 else return guessArray[0] - 1;
         }else //case: number of guesses>1
         {     //average all guesses
-            int sum = 0;
-            for (int i = 0; i < guessArray.Length; i++)
-            {
-                sum += guessArray[i];
-            }
-            return sum / guessArray.Length;
+            return AverageArray(guessArray);
         }
+    }
+
+
+    static int Random01() //returns either a 0 or 1
+    {
+        Random rnd = new Random();
+        int i = rnd.Next(2);
+        return i;
+    }
+
+    static int AverageArray(int[] intArray) //averages all members of an array and rounds the result to nearest int
+    {
+        int sum = 0;
+        for (int i = 0; i < intArray.Length; i++)
+        {
+            sum += intArray[i];
+        }
+        float avg = sum / intArray.Length;
+        int rounded = (int)Math.Round(avg, 0);
+        return rounded;
     }
 }
